@@ -1,4 +1,6 @@
-﻿using Application.Mappings;
+﻿using Application.Interfaces;
+using Application.Mappings;
+using Application.Services;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,8 @@ public static class DependencyInjection
     {
         services.AddMapster();
         MapsterConfig.Config();
+
+        services.AddScoped<ITaskItemService, TaskItemService>();
 
         return services;
     }
