@@ -3,12 +3,17 @@ using Asp.Versioning;
 using Infrastructure;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi;
+using WebApi.Models.Responses;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+        options.InvalidModelStateResponseFactory = context =>
+            new BadRequestObjectResult(BaseResponse<object>.ValidationError(context.ModelState)));
 
 builder.Services.AddEndpointsApiExplorer();
 

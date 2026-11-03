@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.db
+**/*.db-shm
+**/*.db-wal
+.git/
+.gitignore
+.dockerignore
+Dockerfile
+compose.yaml
+global.json

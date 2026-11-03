@@ -21,7 +21,23 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         return await _dbSet.Where(x => x.IsActive).OrderByDescending(x => x.CreatedAt).ToListAsync();
     }
-    
+
+    public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
+    {
+        var query = _dbSet.AsNoTracking().Where(x => x.IsActive);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .ThenByDescending(x => x.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
     {
         return await _dbSet.Where(predicate).Where(x => x.IsActive).ToListAsync();
